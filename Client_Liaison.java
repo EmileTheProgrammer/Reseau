@@ -1,9 +1,5 @@
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -13,11 +9,12 @@ import java.util.zip.Checksum;
 
 public class Client_Liaison {
     private List<byte[]> paquets;
-    public Checksum crc;
-    int nbPaquets;
+    private Checksum crc;
+    private int nbPaquets;
     private Logger log = Logger.getLogger("Logger");
     private FileHandler fh;
     private SimpleFormatter sf;
+    private long checksum;
     public Client_Liaison(List<byte[]> paquets) throws IOException {
         crc = new CRC32();
         this.paquets = paquets;
@@ -31,11 +28,21 @@ public class Client_Liaison {
 
     public void run(){
         for(int i = 0; i < nbPaquets; i++){
-            for(int j = 0; j < paquets.get(i).length; j++){
-                crc.update(paquets.get(i)[j]);
-            }
+            checksum = buildChecksum(paquets.get(i));
+            addChecksum(paquets.get(i), ByteBuffer.allocate(8).putLong(checksum).array());
         }
+
+    }
+
+    public long buildChecksum(byte[] b){
+        crc.reset();
+        crc.update(b);
         writeToFile("CRC updated!");
+        return crc.getValue();
+    }
+
+    public void addChecksum(byte[] paquet, byte[] checkSum){
+
     }
 
     private void writeToFile(String message){
