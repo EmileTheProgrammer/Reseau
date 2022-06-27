@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-public class Client_Transport {
+public class Client_Transport extends Handler{
     byte [] FichierByte;
     Client_Liaison2 Liaison = new Client_Liaison2();
     byte [] FichierNom;
@@ -58,7 +58,7 @@ for(int i=200;i<FichierByte.length;i=i+taille){
     Liaison.run(head.toByteArray());
     compteur++;
 
-}
+}*/
 
     }
 }
