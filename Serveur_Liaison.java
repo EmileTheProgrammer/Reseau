@@ -22,26 +22,25 @@ public class Serveur_Liaison {
     }
 
     public void run() throws IOException, InterruptedException {
-byte [] nombreB;
-int nombre;
-        byte [] buf = new byte[200];
+        byte [] nombreB;
+        int nombre;
+        byte [] buf = new byte[223];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
 
         socket.receive(packet);
-        nombreB = Arrays.copyOfRange(buf,10,15);
+        nombreB = Arrays.copyOfRange(buf,18,23);
         nombre = nombreB[3];
-
         packetByte = packet.getData();
-        System.out.println(received);
+        packetByte = removeChecksum(packetByte);
+        T.run(packetByte);
+        //System.out.println(received);
         //String received = new String(packet.getData(), 0,packet.getLength());
 
        for (int i = 1; i<nombre+1;i++){
-        socket.receive(packet);
-        packetByte = packet.getData();
-        T.run(packetByte);
-        //removeChecksum(packetByte);
-         //String rec2eived = new String(packet.getData(), 0,packet.getLength());
-          // System.out.println(rec2eived);
+           socket.receive(packet);
+           packetByte = packet.getData();
+           packetByte = removeChecksum(packetByte);
+           T.run(packetByte);
        }
 
 
@@ -60,12 +59,9 @@ int nombre;
         checksumLong = new BigInteger(checksum).longValue();
         Checksum crc = new CRC32();
         crc.update(temp);
+        if(checksumLong % crc.getValue() != 0) {
             error = true;
-    }
-    public void removeHeader(byte [] byt){
-byte[] temp;
-temp = Arrays.copyOfRange(byt,15,200);
-
-
+        }
+        return temp;
     }
 }
