@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 public class Client_Transport extends Handler{
     byte [] FichierByte;
-    Client_Liaison2 Liaison = new Client_Liaison2();
+    Client_Liaison Liaison = new Client_Liaison();
     byte [] FichierNom;
     byte [] temp;
     List<byte[]> paquets = new ArrayList<>();
@@ -58,7 +58,7 @@ for(int i=200;i<FichierByte.length;i=i+taille){
     Liaison.run(head.toByteArray());
     compteur++;
 
-}*/
+}
 
     }
 }

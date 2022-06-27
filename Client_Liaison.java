@@ -34,12 +34,12 @@ public class Client_Liaison extends Handler{
         //paquet = addChecksum(checksum);
         //System.out.println(paquet);
         //System.out.println("-----");
-        String received = new String(this.paquet, 0, this.paquet.length);
-        System.out.println(received);
-        System.out.println(this.paquet.length);
+        //String received = new String(this.paquet, 0, this.paquet.length);
+        //System.out.println(received);
         InetAddress address = InetAddress.getByName("127.0.0.1");
         DatagramPacket packet = new DatagramPacket(paquet, paquet.length, address, 30000);
         socket.send(packet);
+
     }
 
     public Checksum buildChecksum(byte[] b){
