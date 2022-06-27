@@ -31,13 +31,13 @@ public class Client_Liaison extends Handler{
         this.paquet = paquet;
         checksum = ByteBuffer.allocate(8).putLong(buildChecksum(paquet).getValue()).array();
         //System.out.println(paquet);
-        //paquet = addChecksum(checksum);
+        this.paquet = addChecksum(checksum);
         //System.out.println(paquet);
         //System.out.println("-----");
         String received = new String(this.paquet, 0, this.paquet.length);
         System.out.println(received);
         InetAddress address = InetAddress.getByName("127.0.0.1");
-        DatagramPacket packet = new DatagramPacket(paquet, paquet.length, address, 30000);
+        DatagramPacket packet = new DatagramPacket(this.paquet, this.paquet.length, address, 30000);
         socket.send(packet);
 
     }
@@ -45,7 +45,7 @@ public class Client_Liaison extends Handler{
     public Checksum buildChecksum(byte[] b){
         crc.reset();
         crc.update(b);
-
+        System.out.println(crc.getValue());
         return crc;
     }
 
