@@ -5,8 +5,16 @@ public class Serveur {
 
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        Serveur_Liaison Liaison = new Serveur_Liaison();
-        Liaison.run();
+
+        CoucheHandler Liaison = new Serveur_Liaison();
+        CoucheHandler Transport = new Serveur_Transport();
+        CoucheHandler Application = new Serveur_Application();
+
+        Liaison.setNextLayer(Transport);
+        Transport.setNextLayer(Application);
+
+
+        Liaison.run(null);
     }
 
 }
