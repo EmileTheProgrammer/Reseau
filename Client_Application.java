@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 
-public class Client_Application {
+public class Client_Application extends Handler{
     Path path;
 
     public Client_Application(Path path){
