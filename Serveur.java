@@ -1,4 +1,13 @@
+import java.io.IOException;
+import java.net.SocketException;
+
 public class Serveur {
 
-    Serveur_Liaison Liaison
+
+    public static void main(String[] args) throws IOException {
+        Serveur_Liaison Liaison = new Serveur_Liaison();
+        Liaison.run();
+
+    }
+
 }

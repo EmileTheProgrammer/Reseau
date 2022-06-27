@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 public class Client_Transport {
     byte [] FichierByte;
+    Client_Liaison2 Liaison = new Client_Liaison2();
     byte [] FichierNom;
     byte [] temp;
     List<byte[]> paquets = new ArrayList<>();
@@ -25,14 +26,14 @@ public class Client_Transport {
         temp= Arrays.copyOfRange(FichierNom,0,taille);
         out.write(header.toByteArray());
     out.write(temp);
-
-        paquets.add(out.toByteArray());
+    Liaison.run(out.toByteArray());
 for(int i=0;i<FichierByte.length;i=i+taille){
     temp = Arrays.copyOfRange(FichierByte,taille,taille+i);
-    paquets.add(temp);
+    Liaison.run(temp);
     compteur++;
 
 }
-Client_Liaison Liaison = new Client_Liaison(paquets);
+
+
     }
 }
