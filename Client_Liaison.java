@@ -8,17 +8,17 @@ import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
 public class Client_Liaison {
-    private List<byte[]> paquets;
+    private byte[] paquets;
     private Checksum crc;
     private int nbPaquets;
     private Logger log = Logger.getLogger("Logger");
     private FileHandler fh;
     private SimpleFormatter sf;
-    private long checksum;
-    public Client_Liaison(List<byte[]> paquets) throws IOException {
+    private byte[] checksum;
+    public Client_Liaison() throws IOException {
         crc = new CRC32();
-        this.paquets = paquets;
-        nbPaquets = this.paquets.size();
+
+        //nbPaquets = this.paquets.length;
         fh = new FileHandler("liaisonDeDonnes.log", true);
         sf = new SimpleFormatter();
         fh.setFormatter(sf);
@@ -26,23 +26,26 @@ public class Client_Liaison {
         log.setUseParentHandlers(false);
     }
 
-    public void run(){
-        for(int i = 0; i < nbPaquets; i++){
-            checksum = buildChecksum(paquets.get(i));
-            addChecksum(paquets.get(i), ByteBuffer.allocate(8).putLong(checksum).array());
-        }
+    public void run(byte[] paquet){
+        this.paquets = paquet;
+        checksum = ByteBuffer.allocate(8).putLong(buildChecksum(paquet).getValue()).array();
+        addChecksum(checksum);
 
     }
 
-    public long buildChecksum(byte[] b){
+    public Checksum buildChecksum(byte[] b){
         crc.reset();
         crc.update(b);
-        writeToFile("CRC updated!");
-        return crc.getValue();
+
+        return crc;
     }
 
-    public void addChecksum(byte[] paquet, byte[] checkSum){
-
+    public void addChecksum(byte[] checksum){
+        byte[] temp = new byte[checksum.length + paquets.length];
+        System.arraycopy(checksum, 0, temp, 0, checksum.length);
+        System.arraycopy(paquets, 0, temp, checksum.length, paquets.length);
+        paquets = temp;
+        writeToFile("Checksum ajouté!");
     }
 
     private void writeToFile(String message){
