@@ -26,7 +26,7 @@ public Client_Liaison2(){
 
         // display response
         String received = new String(packet.getData(), 0,packet.getLength());
-        System.out.println(received);
+       // System.out.println(received);
        // socket.receive(packet);
     }
 
