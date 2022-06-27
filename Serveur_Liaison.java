@@ -30,6 +30,5 @@ public class Serveur_Liaison {
 
 
 
-        socket.close();
     }
 }
