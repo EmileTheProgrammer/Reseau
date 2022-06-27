@@ -1,5 +1,6 @@
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,14 +26,23 @@ public class Client_Transport {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         temp= Arrays.copyOfRange(FichierNom,0,taille);
         out.write(header.toByteArray());
-        out.write(temp);
-        //Liaison.run(out.toByteArray());
-    for(int i=0;i<FichierByte.length;i=i+taille){
-    temp = Arrays.copyOfRange(FichierByte,taille,taille+i);
-    Liaison.run(temp);
-    compteur++;
-    }
+    out.write(temp);
 
+    Liaison.run(out.toByteArray());
+
+for(int i=0;i<FichierByte.length;i=i+taille){
+
+    ByteArrayOutputStream head = new ByteArrayOutputStream();
+    head.write((byte)compteur);
+    head.write(FichierByte);
+    head.write((byte)FichierByte.length/200);
+    temp = Arrays.copyOfRange(FichierByte,i,taille+i);
+    head.write(temp);
+
+    Liaison.run(head.toByteArray());
+    compteur++;
+
+}
 
     }
 }

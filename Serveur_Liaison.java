@@ -11,15 +11,17 @@ public class Serveur_Liaison {
         socket = new DatagramSocket(3123);
 
     }
-    public void run() throws IOException {
+    public void run() throws IOException, InterruptedException {
 
         byte [] buf = new byte[200];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
         socket.receive(packet);
+        String received = new String(packet.getData(), 0,packet.getLength());
+        System.out.println(received);
         InetAddress address = packet.getAddress();
         int port = packet.getPort();
         String test = "Message recu";
-        String test2 = "Jai un ptit penis";
+
         buf=test.getBytes();
 
 

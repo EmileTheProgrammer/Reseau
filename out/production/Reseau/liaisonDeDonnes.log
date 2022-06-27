@@ -3,6 +3,7 @@ Jun. 26, 2022 3:18:18 P.M. Client_Liaison writeToFile
 INFO: CRC updated!
 Jun. 26, 2022 3:30:42 P.M. Client_Liaison writeToFile
 INFO: CRC updated!
+<<<<<<< HEAD
 Jun. 27, 2022 10:17:42 A.M. Client_Liaison writeToFile
 INFO: Checksum ajouté!
 Jun. 27, 2022 10:20:53 A.M. Client_Liaison writeToFile
@@ -157,3 +158,5 @@ Jun. 27, 2022 10:36:09 A.M. Client_Liaison writeToFile
 INFO: Checksum ajouté!
 Jun. 27, 2022 10:36:20 A.M. Client_Liaison writeToFile
 INFO: Checksum ajouté!
+=======
+>>>>>>> main
