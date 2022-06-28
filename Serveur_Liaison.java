@@ -70,7 +70,7 @@ public class Serveur_Liaison implements CoucheHandler{
         crc.update(temp);
         if(checksumLong % crc.getValue() != 0) {
             compteurErreur += 1;
-            log.writeLog("Erreur de transmission. Nb erreurs" + compteurErreur);
+            log.writeLog("Erreur de transmission. Nb erreur : " + compteurErreur);
         }
         else{
             log.writeLog("Transmission réussie");
