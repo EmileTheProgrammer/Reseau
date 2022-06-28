@@ -15,10 +15,10 @@ public class Client_Liaison extends Handler{
     private FileHandler fh;
     private SimpleFormatter sf;
     private byte[] checksum;
-    public Client_Liaison() throws IOException {
+    private int errorCode;
+    public Client_Liaison(int errorCode) throws IOException {
         crc = new CRC32();
-
-        //nbPaquets = this.paquets.length;
+        this.errorCode = errorCode;
         fh = new FileHandler("liaisonDeDonnes.log", true);
         sf = new SimpleFormatter();
         fh.setFormatter(sf);
@@ -30,16 +30,16 @@ public class Client_Liaison extends Handler{
         DatagramSocket socket = new DatagramSocket();
         this.paquet = paquet;
         checksum = ByteBuffer.allocate(8).putLong(buildChecksum(paquet).getValue()).array();
-        //System.out.println(paquet);
         this.paquet = addChecksum(checksum);
-        //System.out.println(paquet);
-        //System.out.println("-----");
-        String received = new String(this.paquet, 0, this.paquet.length);
-        System.out.println(received);
+        if(errorCode != 0){
+            this.paquet = addErrors(this.paquet);
+            errorCode = 0;
+        }
+        //String received = new String(this.paquet, 0, this.paquet.length);
+        //System.out.println(received);
         InetAddress address = InetAddress.getByName("127.0.0.1");
         DatagramPacket packet = new DatagramPacket(this.paquet, this.paquet.length, address, 30000);
         socket.send(packet);
-
     }
 
     public Checksum buildChecksum(byte[] b){
@@ -55,6 +55,14 @@ public class Client_Liaison extends Handler{
         System.arraycopy(paquet, 0, temp, checksum.length, paquet.length);
         paquet = temp;
         writeToFile("Checksum ajouté!");
+        return paquet;
+    }
+
+    public byte[] addErrors(byte[] paquet){
+        if(errorCode == 1)
+        {
+            paquet[150] = (byte) 45;
+        }
         return paquet;
     }
 
