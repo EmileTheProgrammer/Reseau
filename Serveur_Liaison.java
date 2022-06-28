@@ -4,8 +4,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -15,8 +13,10 @@ import java.util.zip.Checksum;
 
 import static java.lang.Integer.parseInt;
 
-public class Serveur_Liaison {
+public class Serveur_Liaison implements CoucheHandler{
     protected DatagramSocket socket = null;
+    private CoucheHandler couche;
+    Serveur_Transport T = new Serveur_Transport();
     private byte[] packetByte;
     private byte[] checksum;
     private int compteurErreur = 0;
@@ -25,6 +25,8 @@ public class Serveur_Liaison {
     private FileHandler fh;
     private SimpleFormatter sf;
     public Serveur_Liaison() throws IOException {
+
+    public Serveur_Liaison() throws SocketException {
         socket = new DatagramSocket(30000);
         fh = new FileHandler("liaisonDeDonnes.log", true);
         sf = new SimpleFormatter();
@@ -32,9 +34,9 @@ public class Serveur_Liaison {
         log.addHandler(fh);
         log.setUseParentHandlers(false);
     }
-
-    public void run() throws IOException, InterruptedException {
-        byte [] nombreB;
+    @Override
+    public void run(byte [] byt) {
+        try {  byte [] nombreB;
         int nombre;
         int prevSeqNb = 0;
         int seqNb;
@@ -49,11 +51,17 @@ public class Serveur_Liaison {
 
         }
 
+
+            socket.receive(packet);
+
         nombreB = Arrays.copyOfRange(buf,18,23);
         nombre = nombreB[3];
         packetByte = packet.getData();
         packetByte = removeChecksum(packetByte);
         T.run(packetByte);
+        couche.run(packetByte);
+        //System.out.println(received);
+        //String received = new String(packet.getData(), 0,packet.getLength());
 
        for (int i = 1; i<nombre+1;i++){
            socket.receive(packet);
@@ -64,13 +72,17 @@ public class Serveur_Liaison {
            }
            packetByte = packet.getData();
            packetByte = removeChecksum(packetByte);
-           T.run(packetByte);
+           couche.run(packetByte);
        }
 
 
         InetAddress address = packet.getAddress();
         int port = packet.getPort();
+        T= (Serveur_Transport) couche;
         T.fin();
+        } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
     }
 
     /*public byte[] getPacket(byte[] packet){
@@ -109,5 +121,10 @@ public class Serveur_Liaison {
     }
     private void writeToFile(String message){
         log.info(message);
+    }
+
+    @Override
+    public void setNextLayer(CoucheHandler couche) {
+        this.couche=couche;
     }
 }

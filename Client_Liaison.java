@@ -7,8 +7,9 @@ import java.util.logging.SimpleFormatter;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
-public class Client_Liaison extends Handler{
+public class Client_Liaison implements CoucheHandler{
     private byte[] paquet;
+    private CoucheHandler couche;
     private Checksum crc;
     private int nbPaquets;
     private Logger log = Logger.getLogger("Logger");
@@ -26,8 +27,14 @@ public class Client_Liaison extends Handler{
         log.setUseParentHandlers(false);
     }
 
-    public void run(byte[] paquet) throws IOException {
-        DatagramSocket socket = new DatagramSocket();
+    @Override
+    public void setNextLayer(CoucheHandler couche) {
+        this.couche=couche;
+    }
+
+    @Override
+    public void run(byte[] paquet) {
+    try {   DatagramSocket socket = new DatagramSocket();
         this.paquet = paquet;
         checksum = ByteBuffer.allocate(8).putLong(buildChecksum(paquet).getValue()).array();
         this.paquet = addChecksum(checksum);
@@ -40,7 +47,12 @@ public class Client_Liaison extends Handler{
         InetAddress address = InetAddress.getByName("127.0.0.1");
         DatagramPacket packet = new DatagramPacket(this.paquet, this.paquet.length, address, 30000);
         socket.send(packet);
+} catch (UnknownHostException | SocketException e) {
+        throw new RuntimeException(e);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
     }
+}
 
     public Checksum buildChecksum(byte[] b){
         crc.reset();

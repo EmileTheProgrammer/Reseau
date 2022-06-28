@@ -1,22 +1,34 @@
+import jdk.swing.interop.SwingInterOpUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class Serveur_Transport {
+public class Serveur_Transport implements CoucheHandler{
+    public CoucheHandler couche;
 ByteArrayOutputStream s = new ByteArrayOutputStream();
 byte[] fichierComplet;
-    public Serveur_Transport(){
+
+    @Override
+    public void setNextLayer(CoucheHandler couche) {
+
+        this.couche=couche;
 
     }
-    public void run(byte[]paquet) throws IOException {
-        byte [] temp;
+@Override
+    public void run(byte[]paquet){
+        try {   byte [] temp;
        temp=removeHeader(paquet);
-       addTableau(temp);
+
+            addTableau(temp);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     public void fin(){
+
         fichierComplet=s.toByteArray();
-        Application_Serveur App = new Application_Serveur();
-        App.run(fichierComplet);
+        couche.run(fichierComplet);
     }
      public byte[] removeHeader(byte [] byt){
         byte[] temp;
