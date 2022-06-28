@@ -36,7 +36,7 @@ public class Serveur_Transport implements CoucheHandler{
     }
      public byte[] removeHeader(byte [] byt){
         byte[] temp;
-        temp = Arrays.copyOfRange(byt,15,200);
+        temp = Arrays.copyOfRange(byt,15,215);
         return temp;
     }
     public void addTableau(byte [] byt) throws IOException {

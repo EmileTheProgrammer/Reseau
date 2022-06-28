@@ -26,6 +26,7 @@ public class Serveur_Liaison implements CoucheHandler{
         socket = new DatagramSocket(30000);
         log = new Log();
     }
+
     @Override
     public void run(byte [] byt) {
         try {

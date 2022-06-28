@@ -37,6 +37,8 @@ public class Client_Liaison implements CoucheHandler{
             this.paquet = addErrors(this.paquet);
             errorCode = 0;
         }
+      //  String s = new String(paquet, StandardCharsets.UTF_8);
+       // System.out.println(s);
         couche.run(this.paquet);
 
     } catch (IOException e) {
