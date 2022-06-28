@@ -20,6 +20,7 @@ public class Serveur_Transport implements CoucheHandler{
     }
 @Override
     public void run(byte[]paquet) throws IOException {
+    //System.out.println(paquet);
         byte [] temp;
         seq = Integer.parseInt(String.valueOf(paquet[13]));
         if(seq != prevseq + 1){

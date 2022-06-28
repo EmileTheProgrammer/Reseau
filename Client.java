@@ -13,10 +13,11 @@ public class Client {
         CoucheHandler Application = new Client_Application(path);
         CoucheHandler Transport = new Client_Transport();
         CoucheHandler Liaison = new Client_Liaison(Integer.parseInt(args[0]));
+        CoucheHandler Physique = new Physique();
 
         Application.setNextLayer(Transport);
         Transport.setNextLayer(Liaison);
-
+        Liaison.setNextLayer(Physique);
 
         Application.run(null);
 
