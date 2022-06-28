@@ -1,10 +1,5 @@
 import java.io.IOException;
-import java.net.*;
 import java.nio.ByteBuffer;
-import java.util.Random;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 

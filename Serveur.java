@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.net.SocketException;
 
 public class Serveur {
 
@@ -9,10 +8,8 @@ public class Serveur {
         CoucheHandler Liaison = new Serveur_Liaison();
         CoucheHandler Transport = new Serveur_Transport();
         CoucheHandler Application = new Serveur_Application();
-        CoucheHandler Physique = new Physique();
         Liaison.setNextLayer(Transport);
         Transport.setNextLayer(Application);
-
 
         Liaison.run(null);
     }

@@ -35,19 +35,19 @@ public class Serveur_Liaison implements CoucheHandler{
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
             socket.receive(packet);
 
-        nombreB = Arrays.copyOfRange(buf,18,23);
-        nombre = nombreB[3];
-        packetByte = packet.getData();
-        packetByte = removeChecksum(packetByte);
-        T.run(packetByte);
-        couche.run(packetByte);
+            nombreB = Arrays.copyOfRange(buf,18,23);
+            nombre = nombreB[3];
+            packetByte = packet.getData();
+            packetByte = removeChecksum(packetByte);
+            T.run(packetByte);
+            couche.run(packetByte);
 
-       for (int i = 1; i<nombre+1;i++){
-           socket.receive(packet);
-           packetByte = packet.getData();
-           packetByte = removeChecksum(packetByte);
-           couche.run(packetByte);
-       }
+           for (int i = 1; i<nombre+1;i++){
+               socket.receive(packet);
+               packetByte = packet.getData();
+               packetByte = removeChecksum(packetByte);
+               couche.run(packetByte);
+           }
 
 
         InetAddress address = packet.getAddress();
