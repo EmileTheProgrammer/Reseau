@@ -1,6 +1,7 @@
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +35,7 @@ public class Client_Transport implements CoucheHandler{
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         temp= Arrays.copyOfRange(FichierByte,0,taille);
         out.write(header.toByteArray());
+
         out.write(temp);
         out.close();
         couche.run(out.toByteArray());
@@ -47,9 +49,11 @@ public class Client_Transport implements CoucheHandler{
             head.close();
 
             temp = Arrays.copyOfRange(FichierByte,i,taille+i);
+
             head.write(temp);
 
     couche.run(head.toByteArray());
+
     compteur++;
 
 }
