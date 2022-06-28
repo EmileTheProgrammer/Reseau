@@ -7,15 +7,12 @@ import java.util.List;
 public class Client_Transport implements CoucheHandler{
     byte [] FichierByte;
     private CoucheHandler couche;
-   // Client_Liaison Liaison = new Client_Liaison();
     byte [] FichierNom;
     byte [] temp;
     List<byte[]> paquets = new ArrayList<>();
     int compteur = 1;
     final int taille = 200;
-    public Client_Transport(byte [] NomByte, byte [] FichierByte, int errorCode) throws IOException {
-        this.FichierByte=FichierByte;
-        this.FichierNom = NomByte;
+    public Client_Transport() throws IOException {
     }
     @Override
     public void run(byte[] FichierByte) {
@@ -30,7 +27,7 @@ public class Client_Transport implements CoucheHandler{
         header.write(compteurB);
         header.write(premier);
 
-            header.write(dernier);
+        header.write(dernier);
 
         header.close();
 
@@ -39,8 +36,6 @@ public class Client_Transport implements CoucheHandler{
         out.write(header.toByteArray());
         out.write(temp);
         out.close();
-        //String str = new String(out.toByteArray(), StandardCharsets.UTF_8);
-      //  System.out.println("akkkkkkkkkkkk"+str);
         couche.run(out.toByteArray());
 
         for(int i=200;i<FichierByte.length;i=i+taille){
@@ -54,9 +49,7 @@ public class Client_Transport implements CoucheHandler{
             temp = Arrays.copyOfRange(FichierByte,i,taille+i);
             head.write(temp);
 
- //  String str = new String(temp, StandardCharsets.UTF_8);
-  // System.out.println("\n\n\n\n de "+ i +"aaaaaaaaaa"+(taille+i)+str);
-   couche.run(head.toByteArray());
+    couche.run(head.toByteArray());
     compteur++;
 
 }

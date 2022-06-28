@@ -6,28 +6,24 @@ import java.util.ArrayList;
 
 
 public class Client_Application implements CoucheHandler {
-    Path path;
+    private Path path;
     private int errorCode;
-    CoucheHandler couche;
+    private CoucheHandler couche;
 
-    public Client_Application(Path path, int errorCode){
-        this.path=path;
-        this.errorCode = errorCode;
+    public Client_Application(Path path){
+        this.path = path;
     }
     @Override
-   public void  run(byte[] tableauByte) {
-
-try{
-               byte [] FichierByte = Files.readAllBytes(path);
-               File F = new File(String.valueOf(path));
-               byte [] FichierNom = F.getName().getBytes();
-               //Client_Transport Transport = new Client_Transport(FichierByte);
-               //Transport.run(FichierByte);
-               couche.run(FichierByte);
-} catch (IOException e) {
+    public void  run(byte[] tableauByte) {
+        try{
+            byte [] FichierByte = Files.readAllBytes(path);
+            File F = new File(String.valueOf(path));
+            byte [] FichierNom = F.getName().getBytes();
+            couche.run(FichierByte);
+        } catch (IOException e) {
         throw new RuntimeException(e);
+        }
     }
-   }
 
 
     @Override

@@ -1,2 +1,5 @@
-package PACKAGE_NAME;public class TransmissionErrorException {
+public class TransmissionErrorException extends Exception{
+    public TransmissionErrorException(String m){
+        super(m);
+    }
 }

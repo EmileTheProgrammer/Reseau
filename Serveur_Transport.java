@@ -6,8 +6,11 @@ import java.util.Arrays;
 
 public class Serveur_Transport implements CoucheHandler{
     public CoucheHandler couche;
-ByteArrayOutputStream s = new ByteArrayOutputStream();
-byte[] fichierComplet;
+    private ByteArrayOutputStream s = new ByteArrayOutputStream();
+    private byte[] fichierComplet;
+    private int seq;
+    private int prevseq = 0;
+    private int errorCount = 0;
 
     @Override
     public void setNextLayer(CoucheHandler couche) {
@@ -16,17 +19,17 @@ byte[] fichierComplet;
 
     }
 @Override
-    public void run(byte[]paquet){
-        try {   byte [] temp;
-       temp=removeHeader(paquet);
-
-            addTableau(temp);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public void run(byte[]paquet) throws IOException {
+        byte [] temp;
+        seq = Integer.parseInt(String.valueOf(paquet[13]));
+        if(seq != prevseq + 1){
+            errorCount++;
         }
-    }
-    public void fin(){
 
+        temp=removeHeader(paquet);
+        addTableau(temp);
+    }
+    public void fin() throws IOException {
         fichierComplet=s.toByteArray();
         couche.run(fichierComplet);
     }

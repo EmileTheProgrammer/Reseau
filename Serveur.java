@@ -4,7 +4,7 @@ import java.net.SocketException;
 public class Serveur {
 
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, TransmissionErrorException {
 
         CoucheHandler Liaison = new Serveur_Liaison();
         CoucheHandler Transport = new Serveur_Transport();

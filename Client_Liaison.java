@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.net.*;
 import java.nio.ByteBuffer;
+import java.util.Random;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -12,19 +13,15 @@ public class Client_Liaison implements CoucheHandler{
     private CoucheHandler couche;
     private Checksum crc;
     private int nbPaquets;
-    private Logger log = Logger.getLogger("Logger");
-    private FileHandler fh;
-    private SimpleFormatter sf;
+    private Log log;
     private byte[] checksum;
     private int errorCode;
+    Physique physique;
     public Client_Liaison(int errorCode) throws IOException {
+        physique = new Physique();
         crc = new CRC32();
+        log = new Log();
         this.errorCode = errorCode;
-        fh = new FileHandler("liaisonDeDonnes.log", true);
-        sf = new SimpleFormatter();
-        fh.setFormatter(sf);
-        log.addHandler(fh);
-        log.setUseParentHandlers(false);
     }
 
     @Override
@@ -34,25 +31,22 @@ public class Client_Liaison implements CoucheHandler{
 
     @Override
     public void run(byte[] paquet) {
-    try {   DatagramSocket socket = new DatagramSocket();
+    try {
         this.paquet = paquet;
+
+        nbPaquets = (int) paquet[13];
+
         checksum = ByteBuffer.allocate(8).putLong(buildChecksum(paquet).getValue()).array();
         this.paquet = addChecksum(checksum);
         if(errorCode != 0){
             this.paquet = addErrors(this.paquet);
             errorCode = 0;
         }
-        //String received = new String(this.paquet, 0, this.paquet.length);
-        //System.out.println(received);
-        InetAddress address = InetAddress.getByName("127.0.0.1");
-        DatagramPacket packet = new DatagramPacket(this.paquet, this.paquet.length, address, 30000);
-        socket.send(packet);
-} catch (UnknownHostException | SocketException e) {
-        throw new RuntimeException(e);
+        physique.run(this.paquet);
     } catch (IOException e) {
         throw new RuntimeException(e);
     }
-}
+    }
 
     public Checksum buildChecksum(byte[] b){
         crc.reset();
@@ -66,7 +60,7 @@ public class Client_Liaison implements CoucheHandler{
         System.arraycopy(checksum, 0, temp, 0, checksum.length);
         System.arraycopy(paquet, 0, temp, checksum.length, paquet.length);
         paquet = temp;
-        writeToFile("Checksum ajouté!");
+        log.writeLog("Checksum ajouté!");
         return paquet;
     }
 
@@ -78,7 +72,4 @@ public class Client_Liaison implements CoucheHandler{
         return paquet;
     }
 
-    private void writeToFile(String message){
-        log.info(message);
-    }
 }
