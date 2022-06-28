@@ -56,7 +56,6 @@ public class Client_Liaison implements CoucheHandler{
     public Checksum buildChecksum(byte[] b){
         crc.reset();
         crc.update(b);
-        //System.out.println(crc.getValue());
         return crc;
     }
 

@@ -5,15 +5,11 @@ import java.nio.file.Paths;
 public class Client {
 
     public static void main(String[] args) throws IOException{
-        if(args.length == 0){
-            args = new String[1];
-            args[0] = "0";
-        }
-        Path path = Paths.get("one-liners.txt");
+
+        Path path = Paths.get(args[0]);
         CoucheHandler Application = new Client_Application(path);
         CoucheHandler Transport = new Client_Transport();
-        CoucheHandler Liaison = new Client_Liaison(Integer.parseInt(args[0]));
-        CoucheHandler Physique = new Physique();
+        CoucheHandler Liaison = new Client_Liaison(Integer.parseInt(args[1]));
 
         Application.setNextLayer(Transport);
         Transport.setNextLayer(Liaison);

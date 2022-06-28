@@ -9,7 +9,7 @@ public class Log {
     private SimpleFormatter sf;
 
     public Log() throws IOException {
-        fh = new FileHandler("liaisonDeDonnes.log");
+        fh = new FileHandler("liaisonDeDonnes.log", true);
         sf = new SimpleFormatter();
         fh.setFormatter(sf);
         log.addHandler(fh);
