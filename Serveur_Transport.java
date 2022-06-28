@@ -12,6 +12,8 @@ public class Serveur_Transport implements CoucheHandler{
     private int prevseq = 0;
     private int errorCount = 0;
 
+    private Log log;
+
     @Override
     public void setNextLayer(CoucheHandler couche) {
 
@@ -19,18 +21,20 @@ public class Serveur_Transport implements CoucheHandler{
 
     }
 @Override
-    public void run(byte[]paquet) throws IOException {
-    //System.out.println(paquet);
+    public void run(byte[]paquet) throws IOException, TransmissionErrorException {
         byte [] temp;
-        seq = Integer.parseInt(String.valueOf(paquet[13]));
+        seq = Integer.parseInt(String.valueOf(paquet[3]));
         if(seq != prevseq + 1){
             errorCount++;
         }
-
+        if(errorCount == 3){
+            throw new TransmissionErrorException("Erreur");
+        }
         temp=removeHeader(paquet);
         addTableau(temp);
+        prevseq = seq;
     }
-    public void fin() throws IOException {
+    public void fin() throws IOException, TransmissionErrorException {
         fichierComplet=s.toByteArray();
         couche.run(fichierComplet);
     }

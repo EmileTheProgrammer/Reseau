@@ -6,7 +6,7 @@ import java.util.logging.SimpleFormatter;
 public interface CoucheHandler {
 
     public void setNextLayer(CoucheHandler couche);
-    public void run(byte[] tableauByte) throws IOException;
+    public void run(byte[] tableauByte) throws IOException, TransmissionErrorException;
 
 
 }

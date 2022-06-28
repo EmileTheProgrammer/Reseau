@@ -55,7 +55,7 @@ public class Serveur_Liaison implements CoucheHandler{
         int port = packet.getPort();
         T= (Serveur_Transport) couche;
         T.fin();
-        } catch (IOException e) {
+        } catch (IOException | TransmissionErrorException e) {
         throw new RuntimeException(e);
     }
     }

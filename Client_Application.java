@@ -20,7 +20,7 @@ public class Client_Application implements CoucheHandler {
             File F = new File(String.valueOf(path));
             byte [] FichierNom = F.getName().getBytes();
             couche.run(FichierByte);
-        } catch (IOException e) {
+        } catch (IOException | TransmissionErrorException e) {
         throw new RuntimeException(e);
         }
     }

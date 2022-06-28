@@ -4,7 +4,7 @@ import java.nio.file.Paths;
 
 public class Client {
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException, TransmissionErrorException {
 
         Path path = Paths.get(args[0]);
         CoucheHandler Application = new Client_Application(path);
