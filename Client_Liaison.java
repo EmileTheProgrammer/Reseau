@@ -42,10 +42,12 @@ public class Client_Liaison implements CoucheHandler{
             this.paquet = addErrors(this.paquet);
             errorCode = 0;
         }
-        physique.run(this.paquet);
+        couche.run(this.paquet);
+
     } catch (IOException e) {
         throw new RuntimeException(e);
     }
+
     }
 
     public Checksum buildChecksum(byte[] b){

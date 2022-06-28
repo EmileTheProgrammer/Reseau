@@ -13,7 +13,7 @@ public class Client {
 
         Application.setNextLayer(Transport);
         Transport.setNextLayer(Liaison);
-
+        Liaison.setNextLayer(Physique);
 
         Application.run(null);
 

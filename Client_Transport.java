@@ -39,7 +39,7 @@ public class Client_Transport implements CoucheHandler{
         couche.run(out.toByteArray());
 
         for(int i=200;i<FichierByte.length;i=i+taille){
-
+            compteurB = ByteBuffer.allocate(5).putInt(compteur).array();
             ByteArrayOutputStream head = new ByteArrayOutputStream();
             head.write(compteurB);
             head.write(premier);
